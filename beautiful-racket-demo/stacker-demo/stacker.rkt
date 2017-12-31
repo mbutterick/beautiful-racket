@@ -28,7 +28,10 @@
   (cond
     [(number? arg) (push-stack! arg)]
     [(or (equal? * arg) (equal? + arg))
-     (define op-result (arg (pop-stack!) (pop-stack!))) 
+     ; This will ensure that stacker can be extended to support - and / operations while keeping the RPN notation
+     (define operand2 (pop-stack!))
+     (define operand1 (pop-stack!))
+     (define op-result (arg operand1 operand2)) 
      (push-stack! op-result)]))
 (provide handle)
 
