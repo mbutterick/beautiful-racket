@@ -14,7 +14,7 @@ var thing = {
 };
 
 thing.foo; // prints 42
-thing.bar; // prints #<procedure:...>
+thing.bar; // prints #<procedure:...test.rkt:11:12>
 thing.bar(3); // prints 18
 
 if ( thing.foo == 42 ) {

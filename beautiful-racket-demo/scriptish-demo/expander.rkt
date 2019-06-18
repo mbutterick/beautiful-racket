@@ -19,10 +19,11 @@
   #'(make-hash (list (cons K V) ...)))
 
 (define-macro (func-def (ARG ...) STMT ...)
-  #'(λ (ARG ...)
+  (syntax/loc caller-stx
+    (λ (ARG ...)
       (let/cc return-cc
         (syntax-parameterize ([return (make-rename-transformer #'return-cc)])
-          STMT ... (void)))))
+          STMT ... (void))))))
 
 (define-syntax-parameter return
   (λ (stx) (error 'not-parameterized)))
