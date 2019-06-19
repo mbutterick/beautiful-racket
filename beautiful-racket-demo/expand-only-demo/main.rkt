@@ -7,7 +7,7 @@
     [(string? x) "whee"]
     [else 'kaboom]))
 
-(define-macro (dsl-module-begin EXPR ...)
+(define-macro (my-module-begin EXPR ...)
   #'(#%module-begin
      (convert-expr 'EXPR) ...))
-(provide (rename-out [dsl-module-begin #%module-begin]))
+(provide (rename-out [my-module-begin #%module-begin]))

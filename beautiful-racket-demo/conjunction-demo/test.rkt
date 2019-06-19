@@ -1,4 +1,4 @@
 #lang conjunction-demo
  
 "hello world"
-(+ 1 (* 2 (- 3)))
+(+ 1 (* 2 (- x)))
