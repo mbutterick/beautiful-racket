@@ -7,7 +7,7 @@
   (for/list ([tok (in-port read ip)])
     tok))
 
-(define (parse toks)
+(define (parse src toks)
   (for/list ([tok (in-list toks)])
     (integer->char
      (for/sum ([val (in-list tok)]
@@ -17,7 +17,7 @@
 
 (define (read-syntax src ip)
   (define toks (tokenize ip))
-  (define parse-tree (parse toks))
+  (define parse-tree (parse src toks))
   (strip-context
    (with-syntax ([PT parse-tree])
      #'(module untaco racket
