@@ -28,9 +28,13 @@
   (module at-reader syntax/module-reader
     #:language 'br
     #:info br-get-info
-    #:read at:read
-    #:read-syntax at:read-syntax
-    (require br/get-info (prefix-in at: scribble/reader)))
+    #:read my-read
+    #:read-syntax my-read-syntax
+    (require br/get-info (prefix-in at: scribble/reader))
+    (define (my-read ip) (syntax->datum (my-read-syntax ip)))
+    (define (my-read-syntax src ip)
+      (parameterize ([current-readtable (at:make-at-readtable #:command-char #\◊)])
+        (at:read-syntax src ip))))
 
   (require debug/reader (prefix-in at: 'at-reader))
 
