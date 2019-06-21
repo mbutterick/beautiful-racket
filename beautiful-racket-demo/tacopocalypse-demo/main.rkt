@@ -1,5 +1,5 @@
 #lang br/quicklang
-(require brag/support racket/sequence)
+(require brag/support)
 
 (module+ reader
   (provide read-syntax))
@@ -11,11 +11,12 @@
    [any-char (lex input-port)]))
 
 (define (tokenize ip)
-  (define toklets
-    (for/list ([toklet (in-port lex ip)])
-      toklet))
-  (for/list ([tok (in-slice 7 toklets)])
-    tok))
+  (define toklets (for/list ([toklet (in-port lex ip)])
+                    toklet))
+  (let loop ([toklets toklets][acc null])
+    (if (null? toklets)
+        (reverse acc)
+        (loop (drop toklets 7) (cons (take toklets 7) acc)))))
 
 (define (parse src toks)
   (for/list ([tok (in-list toks)])
@@ -30,5 +31,10 @@
   (define parse-tree (parse src toks))
   (strip-context
    (with-syntax ([PT parse-tree])
-     #'(module untaco racket
-         (display (list->string 'PT))))))
+     #'(module taco-mod tacopocalypse-demo
+         PT))))
+
+(define-macro (mb PT)
+  #'(#%module-begin
+     (display (list->string 'PT))))
+(provide (rename-out [mb #%module-begin]))
