@@ -20,5 +20,10 @@
   (define parse-tree (parse src toks))
   (strip-context
    (with-syntax ([PT parse-tree])
-     #'(module tacofied br
-         (for-each displayln 'PT)))))
+     #'(module tacofied taco-compiler-demo
+         PT))))
+
+(define-macro (mb PT)
+  #'(#%module-begin
+     (for-each displayln 'PT)))
+(provide (rename-out [mb #%module-begin]))

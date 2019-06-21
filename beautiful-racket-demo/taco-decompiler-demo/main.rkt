@@ -20,5 +20,10 @@
   (define parse-tree (parse src toks))
   (strip-context
    (with-syntax ([PT parse-tree])
-     #'(module untaco racket
-         (display (list->string 'PT))))))
+     #'(module untaco taco-decompiler-demo
+         PT))))
+
+(define-macro (mb PT)
+  #'(#%module-begin
+     (display (list->string 'PT))))
+(provide (rename-out [mb #%module-begin]))

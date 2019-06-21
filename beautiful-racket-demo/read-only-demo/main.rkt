@@ -9,5 +9,5 @@
                           (loop (cons tok toks)))))
     (strip-bindings
      (with-syntax ([(EXPR ...) s-exprs])
-       #'(module read-only-mod racket
+       #'(module read-only-mod br
            EXPR ...)))))
