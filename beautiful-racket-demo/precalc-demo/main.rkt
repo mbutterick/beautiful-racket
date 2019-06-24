@@ -1,6 +1,6 @@
 #lang br/quicklang
 (require brag/support "grammar.rkt")
-(provide (all-defined-out) #%module-begin)
+(provide top fun app s-or-d p-or-q)
 
 (module+ reader
   (provide read-syntax))
@@ -8,34 +8,36 @@
 (define-lex-abbrev reserved-toks
   (:or "fun" "(" ")" "=" "+" "*" "/" "-" ","))
 
-(define tokenize
-  (lexer
-   [(:or (from/to "//" "\n") (from/to "/*" "*/")) (token 'COMMENT #:skip? #t)]
-   [whitespace (tokenize input-port)]
+(define-lex-abbrev digits (char-set "0123456789"))
+
+(define tokenize-1
+  (lexer-srcloc
+   [whitespace (token lexeme #:skip? #t)]
+   [(:or (from/stop-before "#" "\n")
+         (from/to "/*" "*/")) (token 'COMMENT #:skip? #t)]
    [reserved-toks lexeme]
-   [alphabetic (token 'ID (string->symbol lexeme))]
-   [(:+ (char-set "0123456789")) (token 'INT (string->number lexeme))]))
+   [(:seq alphabetic (:* (:or alphabetic) digits)) (token 'ID (string->symbol lexeme))]
+   [(:seq (:? "-") (:+ digits)) (token 'INT (string->number lexeme))]))
 
-(define-macro top #'begin)
+(define-macro top #'#%module-begin)
 
-(define-macro (func-def VAR VARS EXPR)
-  #'(define (VAR . VARS) EXPR))
+(define-macro (fun VAR (ARGVAR ...) EXPR)
+  #'(define (VAR ARGVAR ...) EXPR))
 
-(define-macro-cases sum
+(define-macro-cases s-or-d
   [(_ LEFT "+" RIGHT) #'(+ LEFT RIGHT)]
   [(_ LEFT "-" RIGHT) #'(- LEFT RIGHT)]
   [(_ OTHER) #'OTHER])
 
-(define-macro-cases product
-  [(_ LEFT OP-STR RIGHT)
-   (with-syntax ([OP (string->symbol (syntax->datum #'OP-STR))])
-     #'(OP LEFT RIGHT))]
+(define-macro-cases p-or-q
+  [(_ LEFT "*" RIGHT) #'(* LEFT RIGHT)]
+  [(_ LEFT "/" RIGHT) #'(/ LEFT RIGHT)]
   [(_ OTHER) #'OTHER])
 
-(define-macro func-app #'#%app)
+(define-macro app #'#%app)
 
 (define (read-syntax src ip)
-  (define parse-tree (parse (λ () (tokenize ip))))
+  (define parse-tree (parse src (λ () (tokenize-1 ip))))
   (strip-context
    (with-syntax ([PT parse-tree])
      #'(module mod-name precalc-demo

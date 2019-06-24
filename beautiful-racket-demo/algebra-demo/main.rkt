@@ -11,7 +11,7 @@
 (define tokenize-1
   (lexer
    [whitespace (token lexeme #:skip? #t)]
-   [(from/stop-before "%" "\n") (token 'COMMENT #:skip? #t)]
+   [(from/stop-before "#" "\n") (token 'COMMENT #:skip? #t)]
    [reserved-toks lexeme]
    [(:+ alphabetic) (token 'ID (string->symbol lexeme))]
    [(:+ (char-set "0123456789")) (token 'INT (string->number lexeme))]))
