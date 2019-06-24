@@ -38,7 +38,7 @@
 
 (define (read-syntax src ip)
   (define parse-tree (parse src (λ () (tokenize-1 ip))))
-  (strip-context
+  (strip-bindings
    (with-syntax ([PT parse-tree])
-     #'(module mod-name precalc-demo
+     #'(module precalc-mod precalc-demo
          PT))))
