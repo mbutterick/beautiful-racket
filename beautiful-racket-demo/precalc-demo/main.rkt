@@ -41,6 +41,7 @@
 
 (define (read-syntax src ip)
   (port-count-lines! ip)
+  (lexer-file-path src)
   (define parse-tree (parse src (λ () (tokenize-1 ip))))
   (strip-bindings
    (with-syntax ([PT parse-tree])
