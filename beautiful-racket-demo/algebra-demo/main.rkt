@@ -9,7 +9,7 @@
   (:or "fun" "(" ")" "=" "+" ","))
 
 (define tokenize-1
-  (lexer
+  (lexer-srcloc
    [whitespace (token lexeme #:skip? #t)]
    [(from/stop-before "#" "\n") (token 'COMMENT #:skip? #t)]
    [reserved-toks lexeme]
@@ -23,12 +23,13 @@
   [(_ VAR ARG0 ARG1 EXPR) #'(define (VAR ARG0 ARG1) EXPR)])
 
 (define-macro-cases expr
-  [(_ LEFT "+" RIGHT) #'(+ LEFT RIGHT)]
+  [(_ LEFT RIGHT) #'(+ LEFT RIGHT)]
   [(_ OTHER) #'OTHER])
 
 (define-macro app #'#%app)
 
 (define (read-syntax src ip)
+  (port-count-lines! ip)
   (define parse-tree (parse src (λ () (tokenize-1 ip))))
   (strip-bindings
    (with-syntax ([PT parse-tree])
