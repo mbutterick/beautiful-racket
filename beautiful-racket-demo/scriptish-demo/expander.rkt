@@ -1,8 +1,18 @@
-#lang br/quicklang
+#lang br
 (require racket/stxparam)
-(provide (all-defined-out))
+(provide (all-defined-out)
+         #%top-interaction #%top
+         (rename-out [my-datum #%datum]))
 
 (define-macro top #'#%module-begin)
+
+(define-macro (my-datum . VAL)
+  (with-syntax ([NEW-VAL (let ([val (syntax->datum #'VAL)])
+                          (if (and (integer? val)
+                                   (inexact? val))
+                              (inexact->exact val)
+                              val))])
+    #'(#%datum . NEW-VAL)))
 
 (define-macro (var ID VAL) #'(define ID VAL))
 
@@ -12,8 +22,14 @@
     [(ormap string? xs) (string-join (map ~a xs) "")]))
   
 (define-macro-cases add-or-sub
-  [(_ VAL) #'VAL]
-  [(_ . VALS) #'(add/concat . VALS)])
+  [(_ LEFT "+" RIGHT) #'(add/concat LEFT RIGHT)]
+  [(_ LEFT "-" RIGHT) #'(- LEFT RIGHT)]
+  [(_ OTHER) #'OTHER])
+
+(define-macro-cases mult-or-div
+  [(_ LEFT "*" RIGHT) #'(* LEFT RIGHT)]
+  [(_ LEFT "/" RIGHT) #'(/ LEFT RIGHT)]
+  [(_ OTHER) #'OTHER])
 
 (define-macro (object (K V) ...)
   #'(make-hash (list (cons K V) ...)))

@@ -5,8 +5,9 @@ statement : (var | expr | return) /";" | if | while
 var : /"var" id /"=" expr
 @expr : comparison
 comparison : [comparison ("!=" | "==")] add-or-sub
-add-or-sub : [@add-or-sub /"+"] value 
-@value : id | INTEGER  | STRING | object
+add-or-sub : [add-or-sub ("+" | "-")] mult-or-div
+mult-or-div : [mult-or-div ("*" | "/")] value
+@value : id | NUMBER  | STRING | object
        | fun | app | increment
 increment : id /"++"
 object : /"{" @kvs /"}"

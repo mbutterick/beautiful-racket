@@ -5,9 +5,12 @@
   (provide read-syntax))
 
 (define-lex-abbrev reserved-terms
-  (:or "var" "=" ";" "+" "{" "}" "'" "\""
+  (:or "var" "=" ";" "+" "*" "/"
+       "-" "{" "}" "'" "\""
        ":" "," "(" ")" "//" "/*" "*/"
        "if" "else" "while" "==" "!=" "function" "return" "++"))
+
+(define-lex-abbrev digits (:+ (char-set "0123456789")))
 
 (define tokenize-1
   (lexer-srcloc
@@ -18,8 +21,9 @@
     (token 'ID (string->symbol lexeme))]
    [(:+ (:- (:or alphabetic punctuation) reserved-terms))
     (token 'DEREF (map string->symbol (string-split lexeme ".")))]
-   [(:+ (char-set "0123456789"))
-    (token 'INTEGER (string->number lexeme))]
+   [(:seq (:? "-") (:or (:seq (:? digits) "." digits)
+                        (:seq digits (:? "."))))
+    (token 'NUMBER (string->number lexeme))]
    [(:or (from/to "\"" "\"") (from/to "'" "'"))
     (token 'STRING (string-trim lexeme (substring lexeme 0 1)))]
    [whitespace (token 'WHITE #:skip? #t)]
