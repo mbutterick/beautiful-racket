@@ -5,10 +5,14 @@
   (provide read-syntax))
 
 (define-lex-abbrev reserved-terms
-  (:or "var" "=" ";" "+" "*" "/"
-       "-" "{" "}" "'" "\""
-       ":" "," "(" ")" "//" "/*" "*/"
-       "if" "else" "while" "==" "!=" "function" "return" "++"))
+  (:or "var" "=" ";" "{" "}" "//" "/*" "*/"
+       "+" "*" "/" "-"
+       "'" "\""
+       ":" "," "(" ")" 
+       "if" "else" "while" "?"
+       "==" "!=" "<=" "<" ">=" ">" "&&" "||"
+       "function"
+       "return" "++" "--" "+=" "-="))
 
 (define-lex-abbrev digits (:+ (char-set "0123456789")))
 
