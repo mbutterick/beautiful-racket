@@ -2,7 +2,7 @@
 
 top : @statement*
 statement : (var | expr | return | defun) /";" | if-else | while
-var : /"var" varname /"=" expr
+var : /"var" (varname /"=")+ expr
 @expr : reassignment
 reassignment : ID [("+=" | "-=") expr] | ternary
 ternary : expr /"?" expr /":" expr | logical-or

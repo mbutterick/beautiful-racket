@@ -1,8 +1,7 @@
 #lang br
 (require racket/stxparam)
 (provide (all-defined-out)
-         #%top-interaction #%top #%app
-         (rename-out [my-datum #%datum]))
+         #%app #%top #%datum #%top-interaction)
 
 (define-macro top #'#%module-begin)
 
@@ -18,20 +17,19 @@
   [(_ VAL) #'VAL]
   [(_ L "&&" R) #'(and L R)])
 
-(define-macro (my-datum . VAL)
-  (with-syntax ([NEW-VAL (let ([val (syntax->datum #'VAL)])
-                           (cond
-                             [(and (integer? val) (inexact? val))
-                              (inexact->exact val)]
-                             [(boolean? val) (if val "True" "False")]
-                             [else val]))])
-    #'(#%datum . NEW-VAL)))
+(define-macro (my-app ID ARG ...)
+  #'(error 'boom))
 
-(define-macro (var ID VAL) #'(define ID VAL))
+(define-macro-cases var
+  [(_ ID VAL) #'(define ID VAL)]
+  [(_ ID ... VAL) #'(begin (define ID VAL) ...)])
 
 (define (add/concat . xs)
   (cond
-    [(andmap number? xs) (apply + xs)]
+    [(andmap number? xs) (let ([sum (apply + xs)])
+                           (if (and (integer? sum) (inexact? sum))
+                               (inexact->exact sum)
+                               sum))]
     [(ormap string? xs) (string-join (map ~a xs) "")]))
   
 (define-macro-cases add-or-sub

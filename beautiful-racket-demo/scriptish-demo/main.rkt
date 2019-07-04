@@ -4,7 +4,7 @@
 (module+ reader
   (provide read-syntax))
 
-(define-lex-abbrev reserved-terms
+(define-lex-abbrev reserved-toks
   (:or "var" "=" ";" "{" "}" "//" "/*" "*/"
        "+" "*" "/" "-"
        "'" "\""
@@ -20,14 +20,14 @@
   (lexer-srcloc
    [(:or (from/stop-before "//" "\n")
          (from/to "/*" "*/")) (token 'COMMENT #:skip? #t)]
-   [reserved-terms lexeme]
-   [(:+ (:- (:or alphabetic punctuation) "." reserved-terms))
-    (token 'ID (string->symbol lexeme))]
-   [(:+ (:- (:or alphabetic punctuation) reserved-terms))
-    (token 'DEREF (map string->symbol (string-split lexeme ".")))]
+   [reserved-toks lexeme]
    [(:seq (:? "-") (:or (:seq (:? digits) "." digits)
                         (:seq digits (:? "."))))
     (token 'NUMBER (string->number lexeme))]
+   [(:seq (:+ (:- (:or alphabetic punctuation digits) reserved-toks)))
+    (if (string-contains? lexeme ".")
+        (token 'DEREF (map string->symbol (string-split lexeme ".")))
+        (token 'ID (string->symbol lexeme)))]
    [(:or (from/to "\"" "\"") (from/to "'" "'"))
     (token 'STRING (string-trim lexeme (substring lexeme 0 1)))]
    [whitespace (token 'WHITE #:skip? #t)]
