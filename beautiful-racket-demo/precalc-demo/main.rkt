@@ -16,11 +16,9 @@
    [(:or (from/stop-before "#" "\n")
          (from/to "/*" "*/")) (token 'COMMENT #:skip? #t)]
    [reserved-toks lexeme]
-   [(:seq (:? "-") (:+ (:or alphabetic) digits))
-    (let ([maybe-num (string->number lexeme)])
-      (if maybe-num
-          (token 'INT maybe-num)
-          (token 'ID (string->symbol lexeme))))]))
+   [(:seq (:? "-") (:+ digits)) (token 'INT (string->number lexeme))]
+   [(:+ (:- (:or alphabetic digits) reserved-toks))
+    (token 'ID (string->symbol lexeme))]))
 
 (define-macro top #'#%module-begin)
 
