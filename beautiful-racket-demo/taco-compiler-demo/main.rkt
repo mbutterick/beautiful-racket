@@ -18,7 +18,7 @@
 (define (read-syntax src ip)
   (define toks (tokenize ip))
   (define parse-tree (parse src toks))
-  (strip-context
+  (strip-bindings
    (with-syntax ([PT parse-tree])
      #'(module tacofied taco-compiler-demo
          PT))))
