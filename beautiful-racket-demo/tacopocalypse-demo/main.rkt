@@ -11,17 +11,17 @@
    [any-char (lex input-port)]))
 
 (define (tokenize ip)
-  (define toklets (for/list ([toklet (in-port lex ip)])
-                    toklet))
-  (let loop ([toklets toklets][acc null])
-    (if (null? toklets)
-        (reverse acc)
-        (loop (drop toklets 7) (cons (take toklets 7) acc)))))
+  (for/list ([tok (in-port lex ip)])
+    tok))
 
 (define (parse src toks)
-  (for/list ([tok (in-list toks)])
+  (define heptatoks (let loop ([toks toks][acc null])
+                      (if (empty? toks)
+                          (reverse acc)
+                          (loop (drop toks 7) (cons (take toks 7) acc)))))
+  (for/list ([heptatok (in-list heptatoks)])
     (integer->char
-     (for/sum ([val (in-list tok)]
+     (for/sum ([val (in-list heptatok)]
                [power (in-naturals)]
                #:when (eq? val 'taco))
        (expt 2 power)))))
@@ -34,7 +34,7 @@
      #'(module taco-mod tacopocalypse-demo
          PT))))
 
-(define-macro (mb PT)
+(define-macro (my-module-begin PT)
   #'(#%module-begin
      (display (list->string 'PT))))
-(provide (rename-out [mb #%module-begin]))
+(provide (rename-out [my-module-begin #%module-begin]))
