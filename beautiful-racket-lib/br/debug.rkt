@@ -12,9 +12,11 @@
 (define-macro-cases report-datum
   [(_ STX-EXPR) #`(report-datum STX-EXPR #,(syntax->datum #'STX-EXPR))]
   [(_ STX-EXPR NAME)
-   #'(let ()
-       (eprintf "~a = ~v\n" 'NAME (syntax->datum STX-EXPR))
-       STX-EXPR)])
+   #'(let ([stx STX-EXPR])
+       (eprintf "~a = ~v\n" 'NAME (if (eof-object? stx)
+                                      stx
+                                      (syntax->datum stx)))
+       stx)])
 
 (define-macro (define-multi-version MULTI-NAME NAME)
   #'(define-macro (MULTI-NAME X (... ...))
