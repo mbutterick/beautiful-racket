@@ -15,10 +15,11 @@
     tok))
 
 (define (parse src toks)
-  (define heptatoks (let loop ([toks toks][acc null])
-                      (if (empty? toks)
-                          (reverse acc)
-                          (loop (drop toks 7) (cons (take toks 7) acc)))))
+  (define heptatoks
+    (let loop ([toks toks][acc null])
+      (if (empty? toks)
+          (reverse acc)
+          (loop (drop toks 7) (cons (take toks 7) acc)))))
   (for/list ([heptatok (in-list heptatoks)])
     (integer->char
      (for/sum ([val (in-list heptatok)]
