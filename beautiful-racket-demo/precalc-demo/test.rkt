@@ -1,10 +1,10 @@
 #lang precalc-demo
 fun f(x, y, z) = x + x + x * (y + y) + y * z - z - z
 
-fun g42(z) = f(z, z, z) # line comment
-g42(-10) # = 300
+fun g(z) = f(z, z, z) # line comment
+g(-10) # = 300
 
-fun h() = g42(10)
+fun h() = g(10)
 h() # = 300
 
 fun k(x) = x / 10 / 10 / (x / x)

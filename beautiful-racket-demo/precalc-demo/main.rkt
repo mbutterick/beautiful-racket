@@ -11,14 +11,13 @@
 (define-lex-abbrev digits (char-set "0123456789"))
 
 (define tokenize-1
-  (lexer-srcloc
+  (lexer
    [whitespace (token lexeme #:skip? #t)]
    [(:or (from/stop-before "#" "\n")
          (from/to "/*" "*/")) (token 'COMMENT #:skip? #t)]
    [reserved-toks lexeme]
    [(:seq (:? "-") (:+ digits)) (token 'INT (string->number lexeme))]
-   [(:+ (:- (:or alphabetic digits) reserved-toks))
-    (token 'ID (string->symbol lexeme))]))
+   [(:+ alphabetic) (token 'ID (string->symbol lexeme))]))
 
 (define-macro top #'#%module-begin)
 
@@ -38,8 +37,6 @@
 (define-macro app #'#%app)
 
 (define (read-syntax src ip)
-  (port-count-lines! ip)
-  (lexer-file-path src)
   (define parse-tree (parse src (λ () (tokenize-1 ip))))
   (strip-bindings
    (with-syntax ([PT parse-tree])
