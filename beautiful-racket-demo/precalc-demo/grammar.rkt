@@ -6,6 +6,7 @@ fun : /"fun" var /"(" argvars /")" /"=" expr
 @expr : add-or-sub
 add-or-sub : [add-or-sub ("+" | "-")] mult-or-div
 mult-or-div : [mult-or-div ("*" | "/")] value
-@value : var | INT | app | /"(" expr /")"
+@value : var | int | app | /"(" expr /")"
+int : ["-"] INT 
 app : var /"(" [expr (/"," expr)*] /")"
 @var : ID

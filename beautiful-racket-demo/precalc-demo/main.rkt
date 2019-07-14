@@ -1,6 +1,6 @@
 #lang br/quicklang
 (require brag/support "grammar.rkt")
-(provide top fun app add-or-sub mult-or-div)
+(provide top fun app add-or-sub mult-or-div int)
 
 (module+ reader
   (provide read-syntax))
@@ -33,6 +33,10 @@
   [(_ LEFT "*" RIGHT) #'(* LEFT RIGHT)]
   [(_ LEFT "/" RIGHT) #'(/ LEFT RIGHT)]
   [(_ OTHER) #'OTHER])
+
+(define-macro-cases int
+  [(_ VAL) #'VAL]
+  [(_ "-" VAL) #'(- VAL)])
 
 (define-macro app #'#%app)
 
