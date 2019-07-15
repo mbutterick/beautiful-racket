@@ -8,7 +8,7 @@
 (define-lex-abbrev reserved-toks
   (:or "fun" "(" ")" "=" "+" "*" "/" "-" ","))
 
-(define-lex-abbrev digits (char-set "0123456789"))
+(define-lex-abbrev digit (char-set "0123456789"))
 
 (define tokenize-1
   (lexer
@@ -16,7 +16,7 @@
    [(:or (from/stop-before "#" "\n")
          (from/to "/*" "*/")) (token 'COMMENT #:skip? #t)]
    [reserved-toks lexeme]
-   [(:+ digits) (token 'INT (string->number lexeme))]
+   [(:+ digit) (token 'INT (string->number lexeme))]
    [(:+ alphabetic) (token 'ID (string->symbol lexeme))]))
 
 (define-macro top #'#%module-begin)
