@@ -16,7 +16,7 @@
    [(:or (from/stop-before "#" "\n")
          (from/to "/*" "*/")) (token 'COMMENT #:skip? #t)]
    [reserved-toks lexeme]
-   [(:seq (:? "-") (:+ digits)) (token 'INT (string->number lexeme))]
+   [(:+ digits) (token 'INT (string->number lexeme))]
    [(:+ alphabetic) (token 'ID (string->symbol lexeme))]))
 
 (define-macro top #'#%module-begin)
