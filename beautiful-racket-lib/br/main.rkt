@@ -23,9 +23,9 @@
   (provide (rename-out
             [br-read read]
             [br-read-syntax read-syntax]
-            [at:get-info get-info]))
+            [brr-mod:get-info get-info]))
 
-  (module at-reader syntax/module-reader
+  (module br-reader syntax/module-reader
     #:language 'br
     #:info br-get-info
     #:read my-read
@@ -34,9 +34,9 @@
     (define (my-read ip) (syntax->datum (my-read-syntax ip)))
     (define (my-read-syntax src ip)
       (parameterize ([current-readtable (at:make-at-readtable #:command-char #\◊)])
-        (at:read-syntax src ip))))
+        (read-syntax src ip))))
 
-  (require debug/reader (prefix-in at: 'at-reader))
+  (require debug/reader (prefix-in brr-mod: 'br-reader))
 
   #|
 Use wrap-reader on the whole-module read function that would be exported
@@ -44,5 +44,5 @@ by the reader module, not the single-expression read function like
 at:read-syntax that you deal with within syntax/module-reader or normal use.
 |#
 
-  (define br-read (wrap-reader at:read))
-  (define br-read-syntax (wrap-reader at:read-syntax)))
+  (define br-read (wrap-reader brr-mod:read))
+  (define br-read-syntax (wrap-reader brr-mod:read-syntax)))
