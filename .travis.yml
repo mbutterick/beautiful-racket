@@ -40,9 +40,10 @@ matrix:
   # fail have succeeded.
   fast_finish: true
 
+services:
+  - xvfb
+
 before_install:
-  - "export DISPLAY=:99.0" # needed for testing with `racket/gui`
-  - "sh -e /etc/init.d/xvfb start" # needed for testing with `racket/gui`
   - git clone https://github.com/mbutterick/travis-racket.git
   - cat travis-racket/install-racket.sh | bash # pipe to bash not sh!
   - export PATH="${RACKET_DIR}/bin:${PATH}" #install-racket.sh can't set for us
