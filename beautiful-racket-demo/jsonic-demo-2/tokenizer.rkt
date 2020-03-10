@@ -5,11 +5,10 @@
   (require rackunit))
 
 (define (jsonic-token? x)
-  (or (eof-object? x) (string? x) (token-struct? x)))
+  (or (eof-object? x) (token-struct? x)))
 
 (module+ test
   (check-true (jsonic-token? eof))
-  (check-true (jsonic-token? "a string"))
   (check-true (jsonic-token? (token 'A-TOKEN-STRUCT "hi")))
   (check-false (jsonic-token? 42)))
 

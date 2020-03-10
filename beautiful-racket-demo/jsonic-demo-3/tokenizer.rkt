@@ -5,11 +5,10 @@
   (require rackunit))
 
 (define (token? x)
-  (or (eof-object? x) (string? x) (token-struct? x)))
+  (or (eof-object? x) (token-struct? x)))
 
 (module+ test
   (check-true (token? eof))
-  (check-true (token? "a string"))
   (check-true (token? (token 'A-TOKEN-STRUCT "hi")))
   (check-false (token? 42)))
 
