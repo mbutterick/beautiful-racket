@@ -1,7 +1,7 @@
 #lang racket/base
 (require (for-syntax
           racket/base
-          br/private/generate-literals)
+          "private/generate-literals.rkt")
          racket/list
          racket/match
          racket/syntax
@@ -9,8 +9,8 @@
          syntax/stx
          syntax/strip-context
          syntax/parse
-         br/define
-         br/private/syntax-flatten)
+         "macro.rkt"
+         "private/syntax-flatten.rkt")
 (provide (all-defined-out)
          syntax-flatten
          stx-map

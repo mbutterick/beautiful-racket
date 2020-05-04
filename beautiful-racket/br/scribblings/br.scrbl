@@ -19,6 +19,13 @@ This library provides the @tt{#lang br} teaching language used in the book, as w
 
 This library is designed to smooth over some of the small idiosyncrasies and inconsistencies in Racket, so that those new to Racket are more likely to say ``ah, that makes sense'' rather than ``huh? what?''
 
+@section{Installation}
+
+If you want all the code & documentation, install the package @racket[beautiful-racket].
+
+If you just want the code modules (for instance, for use as a dependency in another project) install the package @racket[beautiful-racket-lib].
+
+If you just want the @racketmodname[br/macro] and @racketmodname[br/syntax] modules, install the package @racket[beautiful-racket-macro].
 
 @section{Conditionals}
 
@@ -170,6 +177,8 @@ A variant of @racket[report] for use with @secref["stx-obj" #:doc '(lib "scribbl
 
 @defmodule[br/define]
 
+@margin-note{This module also exports the bindings from @racketmodname[br/macro].}
+
 @defform[
 (define-cases id 
   [pat body ...+] ...+)
@@ -197,6 +206,12 @@ Define a function that behaves differently depending on how many arguments are s
 (f2 "three" "arguments" "will-not-trigger-an-error-this-time")
 
 ]
+
+
+@section{Macro}
+
+@defmodule[br/macro #:packages ("beautiful-racket-lib" "beautiful-racket-macro")]
+
 
 
 @defform*[
@@ -386,7 +401,7 @@ Like @racket[define-macro], but moves @racket[result-expr] into the lexical cont
 
 @section{Syntax}
 
-@defmodule[br/syntax]
+@defmodule[br/syntax #:packages ("beautiful-racket-lib" "beautiful-racket-macro")]
 
 @defform[(with-pattern ([pattern stx-expr] ...) body ...+)]{
 Bind pattern variables within each @racket[pattern] by matching the pattern to its respective @racket[stx-expr]. These pattern variables can be used in later pattern–expression clauses, or in @racket[body]. Uses the same pattern conventions as @racket[define-macro] (i.e., wildcard variables must be in @tt{CAPS}; everything else is treated as a literal).
