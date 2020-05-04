@@ -53,6 +53,8 @@ script:
  # don't rely on package server
  - travis_retry raco pkg install --deps search-auto https://github.com/mbutterick/br-parser-tools.git?path=br-parser-tools-lib
  - travis_retry raco pkg install --deps search-auto https://github.com/mbutterick/brag.git?path=brag
+ - travis_retry raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-macro
+ - raco test -p beautiful-racket-macro
  - travis_retry raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-lib
  - raco test -p beautiful-racket-lib
  - travis_retry raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-demo
