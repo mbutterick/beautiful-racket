@@ -1,5 +1,5 @@
 #lang racket/base
-(require (for-syntax racket/base syntax/parse) br/macro)
+(require racket/function (for-syntax racket/base syntax/parse) br/macro)
 (provide (all-defined-out) (all-from-out br/macro))
 
 (define-syntax (define-cases stx)
