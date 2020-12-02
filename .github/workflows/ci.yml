@@ -37,7 +37,16 @@ jobs:
         variant: ${{ matrix.racket-variant }}
 
     - name: Install package and its dependencies
-      run: raco pkg install --auto --batch
+      run: raco pkg install --deps search-auto https://github.com/mbutterick/br-parser-tools.git?path=br-parser-tools-lib
+      run: raco pkg install --deps search-auto https://github.com/mbutterick/brag.git?path=brag
+      run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-macro
+      run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-lib
+      run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-demo
+      run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket
 
     - name: Run the tests
-      run: xvfb-run raco test -j 4 -p beautiful-racket
+      run: xvfb-run raco test -p beautiful-racket-macro
+      run: xvfb-run raco test -p beautiful-racket-lib
+      run: xvfb-run raco test -p beautiful-racket-demo
+      run: xvfb-run raco test -p beautiful-racket
+
