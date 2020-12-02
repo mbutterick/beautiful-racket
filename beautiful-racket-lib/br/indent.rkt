@@ -145,12 +145,11 @@
   (check-equal? (line-end-visible t 3) #f))
 
 (define/contract (line-indent text line)
-  ((is-a?/c text%) (or/c exact-nonnegative-integer? #f) . -> . exact-nonnegative-integer?)
+  ((is-a?/c text%) (or/c exact-nonnegative-integer? #f) . -> . (or/c exact-nonnegative-integer? #f))
   (and (valid-line? text line)
-       ;; though lsv can be #false (because a line may not have any starting char)
-       ;; an indent is always, at worst, zero
        (let ([lsv (line-start-visible text line)])
-         (if lsv (- lsv (line-start text line)) 0))))
+         (and lsv ; could be #f
+              (- (line-start-visible text line) (line-start text line))))))
 
 (module+ test
   (check-equal? (line-indent t 0) 0)
