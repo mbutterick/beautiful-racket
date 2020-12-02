@@ -38,15 +38,23 @@ jobs:
 
     - name: Install package and its dependencies
       run: raco pkg install --deps search-auto https://github.com/mbutterick/br-parser-tools.git?path=br-parser-tools-lib
+    - name: install brag
       run: raco pkg install --deps search-auto https://github.com/mbutterick/brag.git?path=brag
+    - name: install br-macro
       run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-macro
+    - name: install br lib
       run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-lib
+    - name: install br demo
       run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket-demo
+    - name: install br
       run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket
 
-    - name: Run the tests
+    - name: Run the brm tests
       run: xvfb-run raco test -p beautiful-racket-macro
+    - name: Run the lib tests
       run: xvfb-run raco test -p beautiful-racket-lib
+    - name: Run the demo tests
       run: xvfb-run raco test -p beautiful-racket-demo
+    - name: Run the br tests
       run: xvfb-run raco test -p beautiful-racket
 
