@@ -162,7 +162,7 @@ But be careful — in the example below, the result of the @racket[if] expressi
 (if (and (report (first-condition? x)) (second-condition? x))
   (one-thing)
   (other-thing))
-  (report x)]
+(report x)]
 
 
 @defform[(report* expr ...)]
