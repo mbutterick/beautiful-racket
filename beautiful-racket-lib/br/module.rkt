@@ -71,8 +71,8 @@
        (define end (+ current-idx how-many))
        (bytes-copy! bs 0 current-bs current-idx end)
        (set! current-idx end)
-       (set! col (+ col how-many))
-       (set! pos (+ pos how-many))
+       (set! col (+ (or col 0) how-many))
+       (set! pos (+ (or pos 0) how-many))
        (unless (< current-idx (bytes-length current-bs))
          (consume-ss!))
        how-many]
