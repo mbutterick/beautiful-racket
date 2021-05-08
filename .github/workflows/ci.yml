@@ -25,6 +25,8 @@ jobs:
           - {racket-version: "7.1",    racket-variant: "CS"}
           - {racket-version: "7.2",    racket-variant: "CS"}
           - {racket-version: "7.3",    racket-variant: "CS"}
+    env:
+      DISPLAY: :99
 
     steps:
     - name: Checkout
@@ -49,12 +51,14 @@ jobs:
     - name: install br
       run: raco pkg install --deps search-auto https://github.com/mbutterick/beautiful-racket.git?path=beautiful-racket
 
-    - name: Run the brm tests
-      run: xvfb-run raco test -p beautiful-racket-macro
-    - name: Run the lib tests
-      run: xvfb-run raco test -p beautiful-racket-lib
-    - name: Run the demo tests
-      run: xvfb-run raco test -p beautiful-racket-demo
-    - name: Run the br tests
-      run: xvfb-run raco test -p beautiful-racket
+    - name: Start virtual framebuffer
+      run: Xvfb "$DISPLAY" -screen 0 1280x1024x24 &
 
+    - name: Run the brm tests
+      run: raco test -p beautiful-racket-macro
+    - name: Run the lib tests
+      run: raco test -p beautiful-racket-lib
+    - name: Run the demo tests
+      run: raco test -p beautiful-racket-demo
+    - name: Run the br tests
+      run: raco test -p beautiful-racket
