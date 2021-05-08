@@ -6,6 +6,7 @@ jobs:
   run:
     name: "Build using Racket '${{ matrix.racket-version }}' (${{ matrix.racket-variant }})"
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.xfail == 'yes' }}
     strategy:
       fail-fast: false
       matrix:
@@ -25,6 +26,13 @@ jobs:
           - {racket-version: "7.1",    racket-variant: "CS"}
           - {racket-version: "7.2",    racket-variant: "CS"}
           - {racket-version: "7.3",    racket-variant: "CS"}
+        include:
+          - {racket-version: "6.7",     racket-variant: "BC", xfail: "yes"}
+          - {racket-version: "7.7",     racket-variant: "CS", xfail: "yes"}
+          - {racket-version: "7.8",     racket-variant: "CS", xfail: "yes"}
+          - {racket-version: "7.9",     racket-variant: "CS", xfail: "yes"}
+          - {racket-version: "current", racket-variant: "BC", xfail: "yes"}
+          - {racket-version: "current", racket-variant: "CS", xfail: "yes"}
     env:
       DISPLAY: :99
 
