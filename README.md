@@ -1,5 +1,5 @@
-beautiful-racket
--
+## beautiful-racket
+
 
 Resources for the “Beautiful Racket” book, including:
 
@@ -10,24 +10,25 @@ Resources for the “Beautiful Racket” book, including:
 * sample languages
 
 
-Installation
--
+## Installation
 
 `raco pkg install beautiful-racket`
 
 
-Update
--
+## Update
 
 `raco pkg update  --update-deps beautiful-racket`
 
-Documentation
--
+## Documentation
 
 http://docs.racket-lang.org/br
 
 
-License
--
+## License
 
 MIT
+
+
+## Project status
+
+Complete. I will maintain the code but no major updates are planned.
