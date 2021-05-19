@@ -1,4 +1,4 @@
-## beautiful-racket
+## beautiful-racket ![Build Status](https://github.com/mbutterick/beautiful-racket/workflows/CI/badge.svg)
 
 
 Resources for the “Beautiful Racket” book, including:
